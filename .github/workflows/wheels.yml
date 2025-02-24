@@ -37,7 +37,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-13]
+        name: [ "macOS (x86_64)", "iOS"]
+        include:
+          - name: macOS (x86_64)
+            platform: macos
+            runs-on: macos-13
+            archs: auto
+          - name: iOS
+            platform: ios
+            runs-on: macos-latest
+            archs: auto
 
     steps:
     - uses: actions/checkout@v4
@@ -54,9 +63,11 @@ jobs:
     - name: Build wheels
       run: python -m cibuildwheel
       env:
-        CIBW_PLATFORM: "ios"
-        CIBW_ARCHS: "auto"
+        CIBW_PLATFORM: ${{ matrix.platform }}
+        CIBW_ARCHS: ${{ matrix.archs }}
         CIBW_BUILD: "cp313*"
+        CIBW_BUILD_VERBOSITY: 1
+
 
     - name: Verify clean directory
       run: git diff --exit-code
