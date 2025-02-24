@@ -54,7 +54,7 @@ jobs:
     - name: Build wheels
       run: python -m cibuildwheel
       env:
-        CIBW_PLATFORM: "macos"
+        CIBW_PLATFORM: "ios"
         CIBW_ARCHS: "auto"
         CIBW_BUILD: "cp313*"
 
